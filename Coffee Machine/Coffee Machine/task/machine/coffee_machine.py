@@ -8,14 +8,14 @@ coffee = [[250,   0, 16, 4],
           [200, 100, 12, 6]]
 
 
-def show_state():
-    print(f"""The coffee machine has:
+def remaining():
+    print(f"""
+The coffee machine has:
 {has_water} ml of water
 {has_milk} ml of milk
 {has_coffee_beans} g of coffee beans
 {has_cups} disposable cups
-${has_money} of money
-""")
+${has_money} of money""")
 
 
 def buy():
@@ -25,14 +25,35 @@ def buy():
     global has_cups
     global has_money
 
-    print("What do you want to buy? 1 - espresso, 2 - latte, 3 - cappuccino:")
-    coffee_type = int(input()) - 1
+    print()
+    print("What do you want to buy? 1 - espresso, 2 - latte, 3 - cappuccino, back - to main menu:")
+    command = input()
+    if command == "back":
+        return
+
+    coffee_type = int(command) - 1
+    if has_water < coffee[coffee_type][0]:
+        print("Sorry, not enough water!")
+        return
+
+    if has_milk < coffee[coffee_type][1]:
+        print("Sorry, not enough milk!")
+        return
+
+    if has_coffee_beans < coffee[coffee_type][2]:
+        print("Sorry, not enough coffee beans!")
+        return
+
+    if has_cups < 1:
+        print("Sorry, not enough cups!")
+        return
 
     has_water -= coffee[coffee_type][0]
     has_milk -= coffee[coffee_type][1]
     has_coffee_beans -= coffee[coffee_type][2]
     has_cups -= 1
     has_money += coffee[coffee_type][3]
+    print("I have enough resources, making you a coffee!")
 
 
 def fill():
@@ -42,6 +63,7 @@ def fill():
     global has_cups
     global has_money
 
+    print()
     print("Write how many ml of water you want to add:")
     has_water += int(input())
     print("Write how many ml of milk you want to add:")
@@ -60,17 +82,21 @@ def take():
 
 
 def menu():
-    print("Write action (buy, fill, take):")
-    command = input()
-    if command == "buy":
-        buy()
-    elif command == "fill":
-        fill()
-    elif command == "take":
-        take()
+    while True:
+        print("Write action (buy, fill, take, remaining, exit): ")
+        command = input()
+        if command == "buy":
+            buy()
+        elif command == "fill":
+            fill()
+        elif command == "take":
+            take()
+        elif command == "remaining":
+            remaining()
+        elif command == "exit":
+            break
+
+        print()
 
 
-show_state()
 menu()
-print()
-show_state()

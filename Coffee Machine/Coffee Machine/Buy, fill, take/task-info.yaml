@@ -298,8 +298,12 @@ files:
   visible: false
   learner_created: false
 feedback_link: https://hyperskill.org/learn/step/5793#comment
-status: Solved
+status: Failed
 feedback:
-  message: Congratulations!
-  time: Tue, 08 Nov 2022 13:08:14 UTC
-record: -1
+  message: "Error in test #1\n\nProgram ran out of input. You tried to read more than\
+    \ expected.\n\nPlease find below the output of your program during this failed\
+    \ test.\nNote that the '>' character indicates the beginning of the input line.\n\
+    \n---\n\nWrite action (buy, fill, take, remaining, exit): \n> take\nI gave you\
+    \ $550\nWrite action (buy, fill, take, remaining, exit):"
+  time: Tue, 08 Nov 2022 13:28:03 UTC
+record: 4
