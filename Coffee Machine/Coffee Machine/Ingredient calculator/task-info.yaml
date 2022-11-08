@@ -98,9 +98,9 @@ files:
     if __name__ == '__main__':
         CoffeeMachineTest('machine.coffee_machine').run_tests()
   learner_created: false
-feedback_link: https://hyperskill.org/projects/68/stages/367/implement#comment
+feedback_link: https://hyperskill.org/learn/step/5791#comment
 status: Solved
 feedback:
   message: Congratulations!
   time: Thu, 03 Nov 2022 11:03:28 UTC
-record: -1
+record: 2
