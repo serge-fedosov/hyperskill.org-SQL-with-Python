@@ -32,10 +32,26 @@ class Card:
 
     def __init__(self):
         Card.customer_account_number += 1
-        self.number = Card.IIN + f"{Card.customer_account_number:09}" + "0"
+        self.number = Card.IIN + f"{Card.customer_account_number:09}"
+        self.generate_checksum()
         self.pin = randint(0, 9999)
         self.balance = 0
         Card.cards.append(self)
+
+    def generate_checksum(self):
+        sum_ = 0
+        number = self.number
+        for i in range(len(number)):
+            v = int(number[i])
+            if i % 2 == 0:
+                v = v * 2
+                v = v - 9 if v > 9 else v
+
+            sum_ += v
+
+        last_digit = 10 - sum_ % 10
+        last_digit = 0 if last_digit == 10 else last_digit
+        self.number += str(last_digit)
 
 
 def create_account():
