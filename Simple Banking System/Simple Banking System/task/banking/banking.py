@@ -1,4 +1,8 @@
 from random import randint
+import sqlite3
+
+cursor = None
+conn = None
 
 msg_menu = """1. Create an account
 2. Log into account
@@ -28,15 +32,13 @@ msg_bye = "\nBye!"
 class Card:
     IIN = "400000"
     customer_account_number = 0
-    cards = []
 
     def __init__(self):
         Card.customer_account_number += 1
         self.number = Card.IIN + f"{Card.customer_account_number:09}"
         self.generate_checksum()
-        self.pin = randint(0, 9999)
+        self.pin = f"{randint(0, 9999):04}"
         self.balance = 0
-        Card.cards.append(self)
 
     def generate_checksum(self):
         sum_ = 0
@@ -55,12 +57,21 @@ class Card:
 
 
 def create_account():
+    global cursor
+
     card = Card()
     print(msg_card.format(card.number, card.pin))
 
+    new_card = (card.number, card.pin, 0)
+    cursor.execute("INSERT INTO card(number, pin, balance) VALUES (?, ?, ?)", new_card)
+    conn.commit()
 
-def show_balance(card):
-    print(msg_balance.format(card.balance))
+
+def show_balance(card_number):
+    find_card = (card_number, )
+    cursor.execute("SELECT balance FROM card WHERE number = ?;", find_card)
+    balance = cursor.fetchone()
+    print(msg_balance.format(balance[0]))
 
 
 def log_out_account():
@@ -68,20 +79,19 @@ def log_out_account():
 
 
 def log_into_account():
+    global cursor
+
     print(msg_enter_card_number)
     card_number = input()
     print(msg_enter_card_pin)
-    card_pin = int(input())
+    card_pin = input()
 
-    current_card = None
-    logged = False
-    for card in Card.cards:
-        if card.number == card_number and card.pin == card_pin:
-            print(msg_logged_in)
-            current_card = card
-            logged = True
-
-    if not logged:
+    find_card = (card_number, card_pin)
+    cursor.execute("SELECT count(*) FROM card WHERE number = ? AND pin = ?;", find_card)
+    count = cursor.fetchone()
+    if count[0] == 1:
+        print(msg_logged_in)
+    else:
         print(msg_wrong_card)
         return
 
@@ -89,7 +99,7 @@ def log_into_account():
         print(msg_logged_menu)
         command = int(input())
         if command == 1:
-            show_balance(current_card)
+            show_balance(card_number)
         elif command == 2:
             log_out_account()
             break
@@ -111,5 +121,32 @@ def menu():
             print(msg_bye)
             break
        
-            
+
+def connect_db():
+    global conn
+    global cursor
+
+    conn = sqlite3.connect('card.s3db')
+    cursor = conn.cursor()
+
+    cursor.execute("""CREATE TABLE IF NOT EXISTS card(
+        id INTEGER PRIMARY KEY,
+        number TEXT,
+        pin TEXT,
+        balance INTEGER DEFAULT 0
+        );""")
+
+    conn.commit()
+
+
+def close_db():
+    global conn
+    global cursor
+
+    cursor.close()
+    conn.close()
+
+
+connect_db()
 menu()
+close_db()

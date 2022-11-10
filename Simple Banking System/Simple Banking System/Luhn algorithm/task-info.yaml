@@ -199,9 +199,9 @@ files:
     if __name__ == '__main__':
         BankingSystem('banking.banking').run_tests()
   learner_created: false
-feedback_link: https://hyperskill.org/projects/109/stages/592/implement#comment
+feedback_link: https://hyperskill.org/learn/step/9828#comment
 status: Solved
 feedback:
   message: Congratulations!
   time: Wed, 09 Nov 2022 10:07:22 UTC
-record: -1
+record: 2
