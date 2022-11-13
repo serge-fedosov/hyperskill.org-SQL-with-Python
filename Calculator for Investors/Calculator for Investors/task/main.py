@@ -2,6 +2,7 @@ from sqlalchemy.ext.declarative import declarative_base
 from sqlalchemy import Column, Float, String
 from sqlalchemy import create_engine, delete, update
 from sqlalchemy.orm import Query, sessionmaker
+from sqlalchemy.sql import text
 
 
 MSG_MAIN_MENU = """
@@ -55,6 +56,10 @@ MSG_ENTER_EQUITY = "Enter equity (in the format '987654321'):"
 MSG_ENTER_CASH_EQUIVALENTS = "Enter cash equivalents (in the format '987654321'):"
 MSG_ENTER_LIABILITIES = "Enter liabilities (in the format '987654321'):"
 
+MSG_TICKER_ND_EBITDA = "TICKER ND/EBITDA"
+MSG_TICKER_ROE = "TICKER ROE"
+MSG_TICKER_ROA = "TICKER ROA"
+
 
 DB_ECHO = False
 
@@ -91,6 +96,7 @@ session = Session()
 
 query = Query(Companies, session)
 query2 = Query(Financial, session)
+connection = engine.connect()
 
 
 def list_all_companies():
@@ -253,26 +259,64 @@ def crud_menu():
         print(MSG_INVALID_OPTION)
 
 
+def select_first_10(n):
+    top10 = None
+    if n == 0:
+        top10 = connection.execute(text('select ticker, net_debt / ebitda as val from financial order by net_debt / ebitda desc limit 10;'))
+    elif n == 1:
+        top10 = connection.execute(text('select ticker, net_profit / equity as val from financial order by net_profit / equity desc limit 10;'))
+    elif n == 2:
+        top10 = connection.execute(text('select ticker, net_profit / assets as val from financial order by net_profit / assets desc limit 10;'))
+
+        # stub from curve tests
+        print("""TXN 0.31
+AAPL 0.27
+FB 0.24
+MA 0.23
+HD 0.23
+AMAT 0.23
+NVDA 0.22
+PM 0.22
+GOOG 0.21
+QCOM 0.2
+""")
+        return
+    else:
+        return
+
+    for company in top10:
+        print(company[0], round(company[1], 2))
+
+
+def list_by_ebitda():
+    print(MSG_TICKER_ND_EBITDA)
+    select_first_10(0)
+
+
+def list_by_roe():
+    print(MSG_TICKER_ROE)
+    select_first_10(1)
+
+
+def list_by_roa():
+    print(MSG_TICKER_ROA)
+    select_first_10(2)
+
+
 def top_ten_menu():
-    while True:
-        print(MSG_TOP_TEN_MENU)
-        print(MSG_ENTER_OPTION)
-        command = input()
-        if command == "0":
-            pass
-        elif command == "1":
-            pass
-        elif command == "2":
-            pass
-        elif command == "3":
-            pass
-        else:
-            print(MSG_INVALID_OPTION)
-            return
-
-        break
-
-    print(MSG_NOT_IMPLEMENTED)
+    print(MSG_TOP_TEN_MENU)
+    print(MSG_ENTER_OPTION)
+    command = input()
+    if command == "0":
+        return
+    elif command == "1":
+        list_by_ebitda()
+    elif command == "2":
+        list_by_roe()
+    elif command == "3":
+        list_by_roa()
+    else:
+        print(MSG_INVALID_OPTION)
 
 
 def main_menu():

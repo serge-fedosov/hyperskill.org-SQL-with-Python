@@ -395,12 +395,9 @@ files:
 - name: main.py
   visible: true
   learner_created: true
-- name: investor.db
-  visible: true
-  learner_created: true
 feedback_link: https://hyperskill.org/learn/step/20548#comment
 status: Solved
 feedback:
   message: Congratulations!
   time: Sun, 13 Nov 2022 14:58:27 UTC
-record: -1
+record: 3

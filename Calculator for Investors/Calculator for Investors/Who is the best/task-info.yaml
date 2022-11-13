@@ -172,6 +172,13 @@ files:
     if __name__ == '__main__':
         InvestorTest().run_tests()
   learner_created: false
+- name: investor.db
+  visible: true
+  learner_created: true
 feedback_link: https://hyperskill.org/learn/step/20549#comment
-status: Unchecked
+status: Solved
+feedback:
+  message: Well done! You've finished the project. Select a new project on <a href="https://hyperskill.org/projects">JetBrains
+    Academy</a> to continue learning.
+  time: Sun, 13 Nov 2022 16:01:36 UTC
 record: -1
