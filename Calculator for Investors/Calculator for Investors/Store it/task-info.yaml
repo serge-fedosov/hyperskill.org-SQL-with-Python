@@ -1,10 +1,5 @@
 type: edu
 files:
-- name: main.py
-  visible: true
-  text: |
-    # write your code here
-  learner_created: false
 - name: test/__init__.py
   visible: false
   learner_created: false
@@ -155,6 +150,12 @@ files:
     if __name__ == '__main__':
         InvestorTest().run_tests()
   learner_created: false
+- name: db.py
+  visible: true
+  learner_created: true
 feedback_link: https://hyperskill.org/learn/step/20547#comment
-status: Unchecked
+status: Solved
+feedback:
+  message: Congratulations!
+  time: Sun, 13 Nov 2022 10:06:00 UTC
 record: -1
